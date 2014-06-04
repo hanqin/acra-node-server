@@ -74,41 +74,41 @@ exports.findAllCollections = function(req, res) {
 }; 
 
 // VIEW - /views/delete.ejs
-exports.deleteLog = function(req, res) {
-    var appid = req.params.appid;
-    var id = req.params.id;
-    console.log("deleteLog.appid:"+appid);    
-    console.log("deleteLog.id:"+id);  
-    db.collection(appid, function(err, collection) {
-        collection.remove({'_id':new BSON.ObjectID(id)}, {safe:true}, function(err, result) {
-    	    res.render('delete', {locals: {"appid":appid,"err":err}});
-        });
+exports.deleteLog = function (req, res) {
+  var appid = req.params.appid;
+  var id = req.params.id;
+  console.log("deleteLog.appid:" + appid);
+  console.log("deleteLog.id:" + id);
+  db.collection(appid, function (err, collection) {
+    collection.remove({'_id': new BSON.ObjectID(id)}, {safe: true}, function (err, result) {
+      res.render('delete', {locals: {"appid": appid, "err": err}});
     });
-}
+  });
+};
 
 // IMPORTANT - Method without security access
 // Method to add info from  mobile
-exports.addLog = function(req, res) {
+exports.addLog = function (req, res) {
   var appid = req.params.appid;
   var log = req.body;
-  console.log("addLog.appid:"+appid);    
-  db.collection(appid, function(err, collection) {
-    collection.insert(log, {safe:true}, function(err, result) {
+  console.log("addLog.appid:" + appid);
+  db.collection(appid, function (err, collection) {
+    collection.insert(log, {safe: true}, function (err, result) {
       if (err) {
-      	console.log("Add log error:"+err);
-        res.send({'error':'An error has occurred'});
+        console.log("Add log error:" + err);
+        res.send({'error': 'An error has occurred'});
       } else {
-				console.log("addLog:OK save");
-				//format date text to date format
-				//to aggregate dates
-				formatDate(result,collection);
-				//After insert send email
-				email.send(appid,log);
+        console.log("addLog:OK save");
+        //format date text to date format
+        //to aggregate dates
+        formatDate(result, collection);
+        //After insert send email
+        email.send(appid, log);
         res.send(result[0]);
       }
     });
   });
-}
+};
 
 function formatDate(toSave,collection) {
 	var doc = toSave[0];
@@ -125,12 +125,12 @@ function formatDate(toSave,collection) {
 }
 
 //Logout and delete cookie
-exports.logout =  function (req, res) {
-  console.log("logout");    
+exports.logout = function (req, res) {
+  console.log("logout");
   req.session = null;
   res.clearCookie(prop.key);
   res.redirect('/index.html');
-}
+};
 
 
 //Function to read phones, dates and logs in parallel
