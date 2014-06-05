@@ -16,8 +16,7 @@
     "node-properties-parser": ">= 0.0.2",
     "serve-favicon": "~2.0.0",
     "cookie-parser": "~1.1.0",
-    "express-session": "~1.2.1",
-    "basic-auth": "0.0.1"
+    "express-session": "~1.2.1"
   },
   "engine": "node >= 0.8.0"
 }
